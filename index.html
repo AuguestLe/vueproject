@@ -14,14 +14,91 @@
 </head>
 <body>
     <div id="app">
-        <input type="text" v-model="name" placeholder="你的名字">
-        <h1>你好，{{name}}</h1>
+        <h2>{{date | formatDate}}</h2>
+        <img :src="imgUrl" class="img-thumbnail " style="width:400px;">
+        <div class="form-inline mt-2">
+            <input type="text" class="form-control" v-model="name" placeholder="你的名字">
+            <button class="btn-info btn ml-4" @click="clearName">clear</button>
+        </div>
+        <h1 v-if="name!=''">你好，{{name}}</h1>
+        <p class="mt-2">总价：{{revesedText}}</p>
+        
     </div>
     <script>
+        var padDate = function(value){
+            return value < 10 ? '0' + value : value;
+        };
         new Vue({
             el:'#app',
             data:{
-                name:''
+                name:'',
+                date:new Date(),
+                imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520511577092&di=6baed18651a4e8661007df373a0c3373&imgtype=0&src=http%3A%2F%2Fimg5.xiazaizhijia.com%2Fwalls%2F20160708%2F1440x900_2f172c09d079701.jpg',
+                package1:[
+                    {
+                        name: 'iPhone 7',
+                        price: 7199,
+                        count: 2
+                    },
+                    {
+                        name: 'ipad',
+                        price: 2888,
+                        count:1
+                    }
+                ],
+                package2:[
+                    {
+                        name: 'apple',
+                        price: 15,
+                        count: 5
+                    },
+                    {
+                        name: 'banana',
+                        price: 20,
+                        count:10
+                    }
+                ]
+            },
+            // 所有计算属性都写到computed里面
+            computed: {
+                revesedText:function(){
+                    var prices = 0;
+                    for (var i = 0; i < this.package1.length; i++){
+                        prices += this.package1[i].price * this.package1[i].count;
+                    }
+                    for (var i =0; i< this.package2.length; i++){
+                        prices += this.package2[i].price * this.package2[i].count;
+                    }
+                    return prices;
+                }
+            },
+            methods: {
+                clearName: function(){
+                    this.name = ''
+                }
+            },
+            filters:{
+                formatDate: function(value){
+                    var date = new Date(value);
+                    var year = date.getFullYear();
+                    var month = padDate(date.getMonth()+1);
+                    var day = padDate(date.getDay());
+                    var hours = padDate(date.getHours());
+                    var minutes = padDate(date.getMonth());
+                    var seconds = padDate(date.getSeconds());
+                    return year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
+                }
+            },
+            mounted:function(){
+                var _this = this;
+                this.timer = setInterval(function(){
+                    _this.date = new Date();
+                },1000);
+            },
+            beforeDestroy:function(){
+                if(this.timer) {
+                    clearInterval(this.timer);
+                }
             }
         })
     </script>
