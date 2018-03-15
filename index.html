@@ -6,101 +6,67 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">   
     <title>test</title>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-    <style>
-        #app{padding: 10px;}
-    </style>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
     <div id="app">
-        <h2>{{date | formatDate}}</h2>
-        <img :src="imgUrl" class="img-thumbnail " style="width:400px;">
-        <div class="form-inline mt-2">
-            <input type="text" class="form-control" v-model="name" placeholder="你的名字">
-            <button class="btn-info btn ml-4" @click="clearName">clear</button>
+        <template v-if="list.length">
+            <table class="table">
+                <thead>
+                    <th>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" @click="selectAll">
+                                全选
+                            </label>
+                        </div>
+                    </th>
+                    <th>商品名称</th>
+                    <th>商品单价</th>
+                    <th>购买数量</th>
+                    <th>操作</th>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in list">
+                        <td><input type="checkbox":value="index" v-model="selectArr"></td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.price}}</td>
+                        <td>
+                            <button class="btn btn-info" @click="handleReduce(index)"
+                            :diabled="item.count===1">-</button>
+                            {{item.count}}
+                            <button class="btn btn-info"  @click="handleAdd(index)">+</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @click="handleRemove(index)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>总价：￥{{ totalPrice }}</div>
+        </template>
+        <div v-else>购物车为空</div>
+
+        <div class="form-group mt-4">
+            <input type="text" class="form-control" @input="handleInput" placeholder="输入。。。。">
+            <p>输入的内容是：{{message}}</p>
+            <div class="bs-example mt-2">
+                <label  class="radio-inline">
+                    <input type="radio" name="blankRadio"  value="option1" >男
+                </label>
+                <label  class="radio-inline">
+                    <input type="radio" name="blankRadio"  value="option1" >女
+                </label>
+                <label  class="radio-inline">
+                    <input type="radio" name="blankRadio"  value="option1" >其他
+                </label>
+            </div>
         </div>
-        <h1 v-if="name!=''">你好，{{name}}</h1>
-        <p class="mt-2">总价：{{revesedText}}</p>
-        
     </div>
-    <script>
-        var padDate = function(value){
-            return value < 10 ? '0' + value : value;
-        };
-        new Vue({
-            el:'#app',
-            data:{
-                name:'',
-                date:new Date(),
-                imgUrl:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520511577092&di=6baed18651a4e8661007df373a0c3373&imgtype=0&src=http%3A%2F%2Fimg5.xiazaizhijia.com%2Fwalls%2F20160708%2F1440x900_2f172c09d079701.jpg',
-                package1:[
-                    {
-                        name: 'iPhone 7',
-                        price: 7199,
-                        count: 2
-                    },
-                    {
-                        name: 'ipad',
-                        price: 2888,
-                        count:1
-                    }
-                ],
-                package2:[
-                    {
-                        name: 'apple',
-                        price: 15,
-                        count: 5
-                    },
-                    {
-                        name: 'banana',
-                        price: 20,
-                        count:10
-                    }
-                ]
-            },
-            // 所有计算属性都写到computed里面
-            computed: {
-                revesedText:function(){
-                    var prices = 0;
-                    for (var i = 0; i < this.package1.length; i++){
-                        prices += this.package1[i].price * this.package1[i].count;
-                    }
-                    for (var i =0; i< this.package2.length; i++){
-                        prices += this.package2[i].price * this.package2[i].count;
-                    }
-                    return prices;
-                }
-            },
-            methods: {
-                clearName: function(){
-                    this.name = ''
-                }
-            },
-            filters:{
-                formatDate: function(value){
-                    var date = new Date(value);
-                    var year = date.getFullYear();
-                    var month = padDate(date.getMonth()+1);
-                    var day = padDate(date.getDay());
-                    var hours = padDate(date.getHours());
-                    var minutes = padDate(date.getMonth());
-                    var seconds = padDate(date.getSeconds());
-                    return year+'-'+month+'-'+day+' '+hours+':'+minutes+':'+seconds;
-                }
-            },
-            mounted:function(){
-                var _this = this;
-                this.timer = setInterval(function(){
-                    _this.date = new Date();
-                },1000);
-            },
-            beforeDestroy:function(){
-                if(this.timer) {
-                    clearInterval(this.timer);
-                }
-            }
-        })
-    </script>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
