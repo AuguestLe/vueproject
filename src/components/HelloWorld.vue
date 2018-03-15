@@ -7,13 +7,15 @@
 <script>
 export default {
   name: 'HelloWorld',
+  props:['counter'],
   data(){
     return {
-       counter: 0
+      counter: this.counter
     }
   },
   methods: {
     handleIncrease: function(){
+      console.log(this.counter);
       this.counter++;
       this.$emit('input',this.counter);
     },

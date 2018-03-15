@@ -1,5 +1,5 @@
 <template>
-  <input class="form-control mt-3" type="text" :value="value" @input="updateValue">
+  <input class="form-control mt-3" type="text" :value="value" @input="updateValue" placeholder="请输入。。">
 </template>
 <script>
 export default {
