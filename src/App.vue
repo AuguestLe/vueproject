@@ -1,25 +1,29 @@
 <template>
     <div id="app">
-        <p>总数 {{total}} </p>
-        <HelloWorld v-model="total"/>
-        <handInput v-model="total"/>
+        <HelloWorld :books="books">
+            <template slot="book" scope="props">
+                <li>{{props.bookName}}</li>
+            </template>
+        </HelloWorld>
     </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import handInput from './components/handInput.vue'
 
 export default {
     name: 'app',
     data(){
         return{
-          total: 0
+            books: [
+                {name:'《vue.js实战》'},
+                {name:'《JavaScript 语言精粹》'},
+                {name:'《JavaScript 高级程序设计'}
+            ]
         }
     },
     components: {
-        HelloWorld,
-        handInput
+        HelloWorld
     },
     methods: {
      
