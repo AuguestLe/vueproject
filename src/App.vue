@@ -1,32 +1,21 @@
 <template>
     <div id="app">
-        <HelloWorld :books="books">
-            <template slot="book" scope="props">
-                <li>{{props.bookName}}</li>
-            </template>
-        </HelloWorld>
+        <inputNumber v-model="value" :max="99" :min="0"></inputNumber>
     </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
 
+<script>
+import inputNumber from "./components/input-number.vue"
 export default {
     name: 'app',
     data(){
         return{
-            books: [
-                {name:'《vue.js实战》'},
-                {name:'《JavaScript 语言精粹》'},
-                {name:'《JavaScript 高级程序设计'}
-            ]
+            value: 0
         }
     },
     components: {
-        HelloWorld
-    },
-    methods: {
-     
+        inputNumber
     }
 }
 </script>
